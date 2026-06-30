@@ -8,7 +8,109 @@ export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
 
 eval "$(atuin init zsh)"
 
-. "$HOME/.local/bin/env"
+#. "$HOME/.local/bin/env"
 
 export PATH="/Applications/Cursor.app/Contents/Resources/app/bin:$PATH"
 
+
+
+# Load environment variables from ~/.env
+if [ -f "$HOME/.env" ]; then
+  set -a
+  source "$HOME/.env"
+  set +a
+fi
+
+# NVM (Node Version Manager)
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+# Google Cloud SDK
+export PATH="/opt/homebrew/share/google-cloud-sdk/bin:$PATH"
+
+# Aliases
+alias cc="claude"
+alias vcc='cd ~/VS && claude'
+alias vs='cd ~/VS'
+alias ll='ls -la'
+alias la='ls -A'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit'
+alias gp='git push'
+alias gl='git log --oneline'
+alias gd='git diff'
+alias gco='git checkout'
+alias gb='git branch'
+alias mkd='mkdir -p'
+alias ports='lsof -i -P -n | grep LISTEN'
+alias ip='curl -s ifconfig.me'
+alias reload='source ~/.zshrc'
+
+# Auto-wrap nvim in tmux + Claude Code split.
+#   nvim <dir>   -> opens that folder in nvim, Claude pane beside it
+#   nvim <file>  -> opens file in nvim (cwd folder), Claude pane beside it
+#   nvim         -> current folder + Claude pane
+# Session is named after the target dir, so reopening a project reattaches
+# (plays nice with tmux-resurrect). Already inside tmux -> plain nvim.
+nvim() {
+  if [ -n "$TMUX" ]; then
+    command nvim "$@"
+    return
+  fi
+
+  local arg="${1:-.}"
+  local dir
+  if [ -d "$arg" ]; then
+    dir="${arg:A}"           # absolute path of the directory
+    arg="."                  # pane cwd will be dir, so open "."
+  else
+    dir="$PWD"               # a file (existing or new) in the current dir
+  fi
+
+  local name="${dir:t}"      # basename for the session name
+  name="${name//[.: ]/_}"    # sanitize for tmux
+
+  # Reattach if a healthy session exists; self-heal if the layout is stale.
+  # A correct session has Claude on the left and nvim on the right. If the
+  # leftmost pane is nvim, the session is flipped/stale (e.g. restored by
+  # tmux-continuum from the old layout) -> kill it and rebuild below.
+  if command tmux has-session -t "$name" 2>/dev/null; then
+    local left_cmd
+    left_cmd=$(command tmux list-panes -t "$name" \
+      -F '#{pane_left} #{pane_current_command}' 2>/dev/null \
+      | sort -n | head -1 | awk '{print $2}')
+    if [ "$left_cmd" = "nvim" ]; then
+      command tmux kill-session -t "$name" 2>/dev/null   # stale -> rebuild
+    else
+      command tmux attach -t "$name"
+      return
+    fi
+  fi
+
+  command tmux new-session -d -s "$name" -c "$dir" claude          # left pane = Claude
+  command tmux split-window -h -l 70% -t "$name" -c "$dir" nvim "$arg"  # right pane = nvim
+  command tmux select-pane -t "${name}:.1"   # focus the nvim pane
+  command tmux attach -t "$name"
+}
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/reddy/.lmstudio/bin"
+# End of LM Studio CLI section
+
+
+# opencode
+export PATH=/Users/reddy/.opencode/bin:$PATH
+
+# Added by Antigravity
+# export PATH="/Users/reddy/.antigravity/antigravity/bin:$PATH"
+
+# caveman default mode (disabled)
+# export CAVEMAN_DEFAULT_MODE=ultra
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/reddy/.local/bin:$PATH"
