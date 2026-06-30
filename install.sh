@@ -124,6 +124,9 @@ ln -s $DOTFILES/borders/bordersrc.symlink $HOME/.config/borders/bordersrc
 mkdir -p $HOME/.config/ghostty
 ln -s -f $DOTFILES/ghostty/config $HOME/.config/ghostty/config
 
+# Symlink WezTerm config
+ln -s -f $DOTFILES/wezterm/wezterm.lua.symlink $HOME/.wezterm.lua
+
 # Symlink Starship config
 ln -s -f $DOTFILES/starship/starship.toml $HOME/.config/starship.toml
 
@@ -151,3 +154,9 @@ echo "================================================="
 git clone https://github.com/LazyVim/starter ~/.config/nvim
 rm -rf ~/.config/nvim/.git
 echo "LazyVim installed! Start Neovim with 'nvim' and refer to the comments in the files to customize."
+
+# Symlink custom Neovim plugins (must run AFTER the LazyVim clone above,
+# since git clone requires an empty/non-existent target directory)
+mkdir -p $HOME/.config/nvim/lua/plugins
+ln -s -f $DOTFILES/nvim/plugins/tmux-navigator.lua $HOME/.config/nvim/lua/plugins/tmux-navigator.lua
+ln -s -f $DOTFILES/nvim/plugins/neo-tree.lua $HOME/.config/nvim/lua/plugins/neo-tree.lua
