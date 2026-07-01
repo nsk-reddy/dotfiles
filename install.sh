@@ -127,6 +127,11 @@ ln -s -f $DOTFILES/ghostty/config $HOME/.config/ghostty/config
 # Symlink WezTerm config
 ln -s -f $DOTFILES/wezterm/wezterm.lua.symlink $HOME/.wezterm.lua
 
+# Symlink Hammerspoon config (Spoons/ managed by Hammerspoon, left untracked)
+mkdir -p $HOME/.hammerspoon
+ln -s -f $DOTFILES/hammerspoon/init.lua $HOME/.hammerspoon/init.lua
+ln -s -f $DOTFILES/hammerspoon/cheatsheet.lua $HOME/.hammerspoon/cheatsheet.lua
+
 # Symlink Starship config
 ln -s -f $DOTFILES/starship/starship.toml $HOME/.config/starship.toml
 
