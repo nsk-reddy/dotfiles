@@ -159,10 +159,3 @@ echo "================================================="
 git clone https://github.com/LazyVim/starter ~/.config/nvim
 rm -rf ~/.config/nvim/.git
 echo "LazyVim installed! Start Neovim with 'nvim'; plugins bootstrap on first launch."
-
-# Symlink custom Neovim plugins (must run AFTER the LazyVim clone above,
-# since git clone requires an empty/non-existent target directory)
-mkdir -p $HOME/.config/nvim/lua/plugins
-ln -s -f $DOTFILES/nvim/plugins/tmux-navigator.lua $HOME/.config/nvim/lua/plugins/tmux-navigator.lua
-ln -s -f $DOTFILES/nvim/plugins/neo-tree.lua $HOME/.config/nvim/lua/plugins/neo-tree.lua
-ln -s -f $DOTFILES/nvim/plugins/claudecode.lua $HOME/.config/nvim/lua/plugins/claudecode.lua
