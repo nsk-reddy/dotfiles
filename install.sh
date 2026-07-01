@@ -103,7 +103,7 @@ package_to_install="neovim
     echo "================================================="
     echo "Installing additional macOS CLI tools (yazi, fzf, etc.)"
     echo "================================================="
-    brew install yazi ffmpeg sevenzip jq poppler fd ripgrep fzf zoxide resvg imagemagick font-symbols-only-nerd-font dua-cli
+    brew install yazi ffmpeg sevenzip jq poppler fd ripgrep fzf zoxide resvg imagemagick font-symbols-only-nerd-font dua-cli figlet
  else
     echo "OS NOT DETECTED, couldn't install package $package_to_install"
     exit 1;
@@ -159,3 +159,8 @@ echo "================================================="
 git clone https://github.com/LazyVim/starter ~/.config/nvim
 rm -rf ~/.config/nvim/.git
 echo "LazyVim installed! Start Neovim with 'nvim'; plugins bootstrap on first launch."
+
+# Symlink custom Neovim plugin: dashboard header shows the project name
+# (cwd basename) rendered via figlet. Needs figlet (installed above).
+mkdir -p $HOME/.config/nvim/lua/plugins
+ln -s -f $DOTFILES/nvim/plugins/dashboard.lua $HOME/.config/nvim/lua/plugins/dashboard.lua
