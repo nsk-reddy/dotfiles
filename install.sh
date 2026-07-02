@@ -165,3 +165,4 @@ echo "LazyVim installed! Start Neovim with 'nvim'; plugins bootstrap on first la
 mkdir -p $HOME/.config/nvim/lua/plugins
 ln -s -f $DOTFILES/nvim/plugins/dashboard.lua $HOME/.config/nvim/lua/plugins/dashboard.lua
 ln -s -f $DOTFILES/nvim/plugins/transparent.lua $HOME/.config/nvim/lua/plugins/transparent.lua
+ln -s -f $DOTFILES/nvim/plugins/claudecode.lua $HOME/.config/nvim/lua/plugins/claudecode.lua
